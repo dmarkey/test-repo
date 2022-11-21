@@ -1,0 +1,22 @@
+# .github/workflows/release.yml
+name: Release
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    if: github.event.pull_request.merged
+    
+    steps:
+      - uses: actions/checkout@v3
+      - name: Release
+        uses: dmarkey/simple-calver-release@v0.1
+        with:
+          mainline-branch: main
+          pr-number: "${{ github.event.pull_request.number }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
